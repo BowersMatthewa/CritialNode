@@ -6,29 +6,33 @@ package com.github.bowersmatthew.criticalnode
 
 public class Graph{
     // variables
-    ArrayList<Node> nodes;
-	ArrayList<Edge> edges;
+    AdjacencyList list;
+	AdjacencyMatric matrix;
 	int nodeCount, edgeCount;
 
-	public Graph(ArrayList<Integer>, 
-	/**
-	 * Add a node to the graph
-	 *
-	 * @param newNode the node which will be added to the graph
-	 * @param edges an array of Edge objects describing the edges incident to this new Node
-	 * @exception throws illegal argument exception 
-	 */
-	private void addNode(Node newNode, Edge[] newEdges){
-		if(nodeCount+1>nodes.length){
-			doubleArray(nodes);
+	public Graph(int nodeCount, int edgeCount) throws IllegalArgumentExeption{
+		if(nodeCount<0 || edgeCount<0){
+			throw new IllegalArgumentException("nodeCount and EdgeCount must be positive integers");
+		}
+		else{
+			list = new AdjacencyList(nodeCount);
+			matric = new AdjacencyMatric(nodeCount);
+			this.nodeCount = nodeCount;
+			this.edgeCount = edgeCount;
 		}
 	}
 
-	private <T> void doubleArray(T[] array){
-		int i;
-		T[] temp = new T[array.length*2];
-		for(i = 0; i<array.length; i++){
-			temp[i]=array[i];
+	public void addEdge(int u, int v) throws IllegalArgumentException{
+		if(u > nodeCount || v > nodeCount || u<0 || v<0){
+			throw new IllegalArgumentException("attempting to add edge to one or more edges which do not exist");
+		}
+		list.addEdge(u,v);
+		matrix.addEdge(u,v);
+	}
+
+	public void removeNode(int node)throws IllegalArgumentException{
+		if(node < 0 || node > nodeCount || !node.getValid()){
+			throw new IllegalArgumentException("Attempting to remove an invalid node");
 		}
 	}
 

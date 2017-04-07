@@ -10,9 +10,11 @@ public class Edge{
      * ori:q
 	 * orgin of a directed graph
      */
-    Node u;
+    private int u;
     /**
      * end of a directed graph
      */
-    Node v;
+    private int v;
+
+	public Edge(Node a, 
 }
