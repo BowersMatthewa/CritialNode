@@ -7,11 +7,12 @@
 
 public class Edge{
     /**
-     * origin of a directed graph
+     * ori:q
+	 * orgin of a directed graph
      */
-    Vertex u;
+    Node u;
     /**
      * end of a directed graph
      */
-    Vertex v;
+    Node v;
 }
