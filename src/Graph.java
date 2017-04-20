@@ -1,4 +1,4 @@
-package com.github.bowersmatthew.criticalnode
+// package com.github.bowersmatthew.criticalnode
 
 /**
  * Java class to represent a graph of edges and nodes
@@ -8,10 +8,11 @@ public class Graph{
     // variables
     AdjacencyList list;
 	AdjacencyMatric matrix;
-	ArrayList<Node> nodes;
+	// ArrayList<Node> nodes;
 	int nodeCount, edgeCount;
+	boolean dir;
 
-	public Graph(int nodeCount, int edgeCount) throws IllegalArgumentExeption{
+	public Graph(int nodeCount, int edgeCount, boolean dir) throws IllegalArgumentExeption{
 		if(nodeCount<0 || edgeCount<0){
 			throw new IllegalArgumentException("nodeCount and EdgeCount must be positive integers");
 		}
@@ -20,6 +21,7 @@ public class Graph{
 			matric = new AdjacencyMatric(nodeCount);
 			this.nodeCount = nodeCount;
 			this.edgeCount = edgeCount;
+			this.dir = dir;
 		}
 	}
 
@@ -27,16 +29,18 @@ public class Graph{
 		if(u > nodeCount || v > nodeCount || u<0 || v<0){
 			throw new IllegalArgumentException("attempting to add edge to one or more edges which do not exist");
 		}
-		if(!u.isValid || v.isValid()){
-			throw new IllegalArgumentException("attempting to add edge to a node which has been removed");
-		}
-		list.addEdge(u,v);
+		
+		list.addEdge(u,v,dir);
 		matrix.addEdge(u,v);
 	}
 
 	public void removeNode(int node)throws IllegalArgumentException{
-		if(node < 0 || node > nodeCount || !node.isValid()){
+		if(node < 0 || node > nodeCount){
 			throw new IllegalArgumentException("Attempting to remove an invalid node");
+		}
+		
+		for(Integer neigh : list.getNodeNeighbors(start)){
+			list.removeEdge(start, neigh, 0);
 		}
 	}
 
@@ -60,5 +64,23 @@ public class Graph{
 			}
 		}
 		
+	}
+	
+	/**
+	 * getDirected
+	 *
+	 * @return boolean dir - returns the dir value of the graph indicating if it is directed or not
+	 */
+	public boolean getDirected(){
+		return dir;
+	}
+
+	/**
+	 * transitive closure
+	 */
+	public Graph doTransitiveClosure(Graph og){
+		Graph tc = new Graph(nodeCount, 0, og.getDirected());
+
+
 	}
 }

@@ -20,7 +20,7 @@ public class CritialNode{
 		
 		String[] line = scan.nextLine().split(" ");
 		try{
-			graph = new Graph(Integer.parseInt(line[0]), Integer.parseInt(line[1]));
+			graph = new Graph(Integer.parseInt(line[0]), Integer.parseInt(line[1]), 0);
 			int numToRemove = Integer.parseInt(line[2]);
 		}catch(NumberFormatException nfe){
 			System.out.println("Expected 3 integers seperated by a space on first line");
