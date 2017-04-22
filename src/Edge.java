@@ -16,5 +16,5 @@ public class Edge{
      */
     private int v;
 
-	public Edge(Node a, 
+	public Edge(Node a ){}
 }

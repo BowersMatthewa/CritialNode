@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 // package com.github.bowersmatthew.criticalnode
 
 /**
@@ -7,18 +9,18 @@
 public class Graph{
     // variables
     AdjacencyList list;
-	AdjacencyMatric matrix;
+	//AdjacencyMatric matrix;
 	// ArrayList<Node> nodes;
 	int nodeCount, edgeCount;
 	boolean dir;
 
-	public Graph(int nodeCount, int edgeCount, boolean dir) throws IllegalArgumentExeption{
+	public Graph(int nodeCount, int edgeCount, boolean dir) throws IllegalArgumentException{
 		if(nodeCount<0 || edgeCount<0){
 			throw new IllegalArgumentException("nodeCount and EdgeCount must be positive integers");
 		}
 		else{
 			list = new AdjacencyList(nodeCount);
-			matric = new AdjacencyMatric(nodeCount);
+			//matric = new AdjacencyMatric(nodeCount);
 			this.nodeCount = nodeCount;
 			this.edgeCount = edgeCount;
 			this.dir = dir;
@@ -31,7 +33,11 @@ public class Graph{
 		}
 		
 		list.addEdge(u,v,dir);
-		matrix.addEdge(u,v);
+		//matrix.addEdge(u,v);
+	}
+	
+	public AdjacencyList getAdjacencyList(){
+		return list;
 	}
 
 	public void removeNode(int node)throws IllegalArgumentException{
@@ -39,8 +45,12 @@ public class Graph{
 			throw new IllegalArgumentException("Attempting to remove an invalid node");
 		}
 		
-		for(Integer neigh : list.getNodeNeighbors(start)){
-			list.removeEdge(start, neigh, 0);
+		for(Integer neigh : list.getNodeNeighbors(node)){
+			try{
+				list.removeEdge(node, neigh, false);
+			}catch(IllegalArgumentException iae){
+				System.out.printf("edge does not exist from %d to %d", node, neigh);
+			}
 		}
 	}
 
@@ -51,9 +61,10 @@ public class Graph{
 	 * @throws IllegalArgumentException - if attempting to add a node which is already 
 	 * 				in the graph
 	 */
+/*
 	public void addNode(Node newNode){
 		if(nodes.contains(newNode) && newNode.isValid()){
-			throw new IllegalArgumentException("Node is already in the graph")
+			throw new IllegalArgumentException("Node is already in the graph");
 		}else if(nodes.contains(newNode) && !newNode.isValid()){
 			newNode.setValid(1);
 		}else{
@@ -65,7 +76,7 @@ public class Graph{
 		}
 		
 	}
-	
+*/
 	/**
 	 * getDirected
 	 *
@@ -78,9 +89,26 @@ public class Graph{
 	/**
 	 * transitive closure
 	 */
-	public Graph doTransitiveClosure(Graph og){
-		Graph tc = new Graph(nodeCount, 0, og.getDirected());
-
-
+	public boolean[][] doTransitiveClosure(){
+		// set up an array of boolean matrices to 
+		boolean[][][] matrices = new boolean[nodeCount][nodeCount][nodeCount];
+		// set the first layer to be the adjacency matrix
+		for(int i = 0; i < nodeCount; i++){
+			ArrayList<Integer> neighbors = list.getNodeNeighbors(i);
+			for(int j = 0; j < nodeCount; j++){
+				if(i == j || neighbors.contains(j))
+					matrices[0][i][j] = true;
+				else
+					matrices[0][i][j] = false;
+			}
+		}
+		for(int k = 1; k < nodeCount; k++){
+			for(int i = 0; i < nodeCount; i++){
+				for(int j = 0; j <nodeCount; j++){
+					matrices[k][i][j] = matrices[k-1][i][j] || (matrices[k-1][i][k] && matrices[k-1][k][j]);
+				}
+			}
+		}
+		return matrices[nodeCount-1];
 	}
 }

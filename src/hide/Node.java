@@ -1,4 +1,6 @@
-package com.git.bowersmatthewa.criticalnode
+import java.util.ArrayList;
+
+/* package com.git.bowersmatthewa.criticalnode
 /**
  * 
  * Node.java 
@@ -9,18 +11,18 @@ package com.git.bowersmatthewa.criticalnode
  */
 
 public class Node {
-	ArrayList<Node> =  neighbors;
+	ArrayList<Node> neighbors;
 	int name;
 	boolean valid;
 
-	public Node Node(int name, ArrayList<Node> edges) throws IllegalArgumentException {
-		if(name.equals(""){
+	public Node(int name, ArrayList<Node> edges) throws IllegalArgumentException {
+		if(name < 0){
 			throw new IllegalArgumentException("Node name may not be empty");
 		}
 		else{
 			this.neighbors = edges;
 			this.name = name;
-			this.valid = 1;
+			this.valid = true;
 		}
 	}
 
@@ -34,7 +36,7 @@ public class Node {
 			if(neighbors.contains(newNeighbor)){
 				throw new IllegalArgumentException("Edge already exists");
 			}
-			edges.add(newNeighbor);
+			neighbors.add(newNeighbor);
 	}
 
 	/**
@@ -45,13 +47,8 @@ public class Node {
 	}
 
 
-	public String getName(){
+	public int getName(){
 		return name;
-	}
-
-
-	public ArrayList<Edge> getEdges(){
-		return edges;
 	}
 
 
@@ -59,7 +56,7 @@ public class Node {
 		StringBuilder sb = new StringBuilder();
 		 
 		sb.append("Node: " + name + "\n" + "Edges");
-		for(Node n : edges){
+		for(Node n : neighbors){
 			sb.append(n.getName() + " ");
 		}
 

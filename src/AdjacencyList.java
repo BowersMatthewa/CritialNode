@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class AdjacencyList{
 	
-	private ArrayList[] nodes;
+	private ArrayList<Integer>[] nodes;
 
 	private int size;
 
@@ -50,8 +50,8 @@ public class AdjacencyList{
 	}
 	
 	public ArrayList<Integer> getNodeNeighbors(int start) throws IllegalArgumentException {
-		if(start >= size || start / < 0){
-			throw new IllegalArgumentException("no such node")l
+		if(start >= size || start < 0){
+			throw new IllegalArgumentException("no such node");
 		}
 		else
 			return nodes[start];
@@ -63,9 +63,9 @@ public class AdjacencyList{
 	 * iterates through the entire array list and prints it out to stdout
 	 */
 	public void printList(){
-		for(ArrayList list : nodes){
-			for(Integer node : list){
-				System.out.print(node + "  ");
+		for(ArrayList<Integer> neighs : nodes){
+			for(Integer node : neighs){
+				System.out.print(node +1 + "  ");
 			}
 			System.out.println(); 
 		}
@@ -80,10 +80,14 @@ public class AdjacencyList{
 	 * @params int finsih - the end of the edge
 	 * @params boolean dir - is the edge directed
 	 */
-	public void removeEdge(int start, int finish, boolean dir){
-		nodes[start].remove(finish);
+	public void removeEdge(int start, int finish, boolean dir)throws IllegalArgumentException{
+		if(!nodes[start].remove((Integer)finish)){
+			throw new IllegalArgumentException("no such edge");
+		}
 		if(!dir){
-			nodes[finish].remove(start);
+			if(!nodes[finish].remove((Integer)start)){
+				throw new IllegalArgumentException("no such edge");
+			}
 		}
 	}
 
