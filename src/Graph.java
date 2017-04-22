@@ -44,13 +44,10 @@ public class Graph{
 		if(node < 0 || node > nodeCount){
 			throw new IllegalArgumentException("Attempting to remove an invalid node");
 		}
-		
-		for(Integer neigh : list.getNodeNeighbors(node)){
-			try{
-				list.removeEdge(node, neigh, false);
-			}catch(IllegalArgumentException iae){
-				System.out.printf("edge does not exist from %d to %d", node, neigh);
-			}
+		try{
+			list.removeNode(node);
+		}catch(IllegalArgumentException iae){
+			System.out.printf("Error removing node: %d: " + iae.getMessage(), node);
 		}
 	}
 

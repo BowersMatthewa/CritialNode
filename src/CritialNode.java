@@ -24,8 +24,8 @@ public class CritialNode{
 			int numToRemove = Integer.parseInt(line[2]);
 			buildGraph(graph, args);
 			graph.getAdjacencyList().printList();
-			//graph.removeNode(1);
-			//graph.getAdjacencyList().printList();
+			graph.removeNode(1);
+			graph.getAdjacencyList().printList();
 		}catch(NumberFormatException nfe){
 			System.out.println("Expected 3 integers seperated by a space on first line");
 			System.exit(1);

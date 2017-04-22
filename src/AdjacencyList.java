@@ -24,11 +24,11 @@ public class AdjacencyList{
 	 *
 	 * @params n - The number of nodes in the graph
 	 */
-	public AdjacencyList(int v){
-		nodes = new ArrayList[v];
-		size = v;
-		for(int i = 0; i <v; i++){
-			nodes[i] = new ArrayList<Integer>(v-1);
+	public AdjacencyList(int n){
+		nodes = new ArrayList[n];
+		size = n;
+		for(int i = 0; i <n; i++){
+			nodes[i] = new ArrayList<Integer>(n-1);
 		}
 	}
 	
@@ -63,14 +63,33 @@ public class AdjacencyList{
 	 * iterates through the entire array list and prints it out to stdout
 	 */
 	public void printList(){
+		int i = 1;
 		for(ArrayList<Integer> neighs : nodes){
+			System.out.printf("Node %d neighbors: \n", i);
 			for(Integer node : neighs){
 				System.out.print(node +1 + "  ");
 			}
 			System.out.println(); 
+			i++;
 		}
 	}
-	
+
+	/**
+	 * removeNode - removes incoming and outgoing edges of a node
+	 *
+	 * @params int node - the number of the node to be removed
+	 */
+	public void removeNode(int node) throws IllegalArgumentException{
+		if(node<0 || node >= size){
+			throw new IllegalArgumentException("No such node");
+		}
+		for(Integer neigh : nodes[node]){
+			// remove node from everyone elses adjacency list
+			nodes[neigh].remove((Integer)node);
+		}
+		nodes[node].clear();
+	}
+
 	/**
 	 * removeEdge - removes an edge from the graph 
 	 *
