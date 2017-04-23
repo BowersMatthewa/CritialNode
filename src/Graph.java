@@ -11,7 +11,7 @@ public class Graph{
     AdjacencyList list;
 	//AdjacencyMatric matrix;
 	// ArrayList<Node> nodes;
-	int nodeCount, edgeCount;
+	public int nodeCount, edgeCount;
 	boolean dir;
 
 	public Graph(int nodeCount, int edgeCount, boolean dir) throws IllegalArgumentException{
