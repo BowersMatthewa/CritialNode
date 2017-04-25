@@ -26,11 +26,21 @@ public class CritialNode{
 			buildGraph(graph, args);
 			// copy the original graph for safe keeping
 			ograph = graph.copyGraph(graph);
-			graph.getAdjacencyList().printList();
+			//graph.getAdjacencyList().printList();
 			DFS current = new DFS(graph);
 			try{
-				System.out.print(current.countPairWise());
+				System.out.println(current.countPairWise());
 			}catch(Exception e){e.printStackTrace();}
+			System.out.println(current.printForest());
+			for(int i = 0; i < numToRemove; i++){
+				graph.removeRandom();
+			}
+			//graph.getAdjacencyList().printList();
+			current = new DFS(graph);
+			try{
+				System.out.println(current.countPairWise());
+			}catch(Exception e){e.printStackTrace();}
+			System.out.println(current.printForest());
 		}catch(NumberFormatException nfe){
 			System.out.println("Expected 3 integers seperated by a space on first line");
 			System.exit(1);

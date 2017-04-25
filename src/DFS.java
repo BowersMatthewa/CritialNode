@@ -80,12 +80,17 @@ public class DFS{
 			else ft = time;
 		}
 		
+		public String toString(){
+			return "Node: " + name + " Pred: " + pred.getName();
+		}
+		
 	}
 
 	public DFS(Graph graph){
 		this.graph = graph;
 		done = false;
-		this.forestCount = 0;
+		this.forestCount = -1;
+		nodes = new ArrayList<Node>();
 		nodeCount = graph.nodeCount;
 		for(int i = 0; i < nodeCount; i++){
 			nodes.add(new Node(Integer.toString(i)));
@@ -102,15 +107,32 @@ public class DFS{
 		else return forest;
 	}
 	
+	public String printForest(){
+		String asString = "";
+		int i = 0;
+		for(ArrayList<Node> graph : forest){
+			asString += "Tree: " + i + "\n";
+			for(Node n : graph){
+				asString += "\t" + n.toString() + "\n";
+			}
+			asString += "\n";
+			i++;
+		}
+		return asString;
+	}
+	
 	/**
 	 * doDFS - carry out the DFS starting with node 0
 	 */
 	private void doDFS(){
 		for(Node n : nodes){
 			if(n.getColor() == Color.white){
+				System.out.println(n.getName());
 				forestCount++;
 				ArrayList<Node> subGraph = new ArrayList<Node>();
 				forest.add(subGraph);
+				n.setPred(n);
+				subGraph.add(n);
 				visit(n, subGraph);	
 			}
 		}
@@ -149,7 +171,8 @@ public class DFS{
 		else{
 			int count = 0;
 				for(ArrayList<Node> g : forest){
-					count+= g.size()*(g.size()-1)/2;
+					System.out.println(g.size());
+					count+= (g.size()*(g.size()-1))/2;
 				}
 			return count;
 		}

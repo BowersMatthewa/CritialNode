@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Random;
 
 // package com.github.bowersmatthew.criticalnode
@@ -59,7 +60,11 @@ public class Graph{
 		try{
 			list.removeNode(node);
 		}catch(IllegalArgumentException iae){
-			System.out.printf("Error removing node: %d: " + iae.getMessage(), node);
+			System.out.printf("Error removing node: %d: \n" + iae.getMessage(), node);
+		}catch(ConcurrentModificationException cme){
+			System.out.printf("Error removing node: %d: \n" + cme.getMessage(), node);
+			cme.printStackTrace();
+			removeRandom();
 		}
 	}
 
@@ -103,6 +108,7 @@ public class Graph{
 		do{
 			node = rand.nextInt(nodeCount);
 		}while(removed.contains((Integer)node));
+		System.out.printf("Removing %d\n", node + 1);
 		removed.add((Integer)node);
 		removeNode(node);
 	}

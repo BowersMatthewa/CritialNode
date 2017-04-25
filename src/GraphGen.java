@@ -7,9 +7,9 @@ public class GraphGen {
 
 	public static void main(String[] args) {
 		Random rand = new Random();
-		int node = rand.nextInt(70)+30;
-		int edges = rand.nextInt(600)+400;
-		int remove = rand.nextInt(5) + 5;
+		int node = rand.nextInt(10)+5;
+		int edges = rand.nextInt(20)+5;
+		int remove = rand.nextInt(2)+1;
 		ArrayList<Edge> edgeList = new ArrayList<Edge>();
 		
 		System.out.println(node + " " + edges + " " + remove);
@@ -22,10 +22,15 @@ public class GraphGen {
 			start = rand.nextInt(node) +1;
 			finish = rand.nextInt(node)+1;
 			newEdge = new Edge(start, finish);
-			if(!edgeList.contains(newEdge)){
-				edgeList.add(newEdge);
-			}else{
-				System.out.println("Edge Aleady Exists");
+			if(start != finish)
+				if(!edgeList.contains(newEdge)){
+					edgeList.add(newEdge);
+				}
+				else{
+				//System.out.println("Edge Aleady Exists");
+					i--;
+				}
+			else{
 				i--;
 			}
 		

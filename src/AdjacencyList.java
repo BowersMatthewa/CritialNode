@@ -8,6 +8,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class AdjacencyList{
@@ -83,10 +84,14 @@ public class AdjacencyList{
 		if(node<0 || node >= size){
 			throw new IllegalArgumentException("No such node");
 		}
-		for(Integer neigh : nodes[node]){
-			// remove node from everyone elses adjacency list
-			nodes[neigh].remove((Integer)node);
+		Iterator<Integer> adj = nodes[node].iterator();
+		while(adj.hasNext()){
+			// remove node from everyone else's adjacency list
+			int next = (int)adj.next();
+			System.out.println("Removing: " + (node + 1) +"from: " + (next + 1));
+			nodes[next].remove((Integer)node);
 		}
+		adj = null;
 		nodes[node].clear();
 	}
 
