@@ -34,6 +34,15 @@ public class AdjacencyList{
 	}
 	
 	/**
+	 * getNodes
+	 * 
+	 * @return the array of ArrayLists
+	 */
+	public ArrayList<Integer>[] getNodes(){
+		return nodes;
+	}
+	
+	/**
 	 * addEdge - adds and edge to the graph
 	 *
 	 * If the edge is directed an edge from start to finish will be added
@@ -50,6 +59,12 @@ public class AdjacencyList{
 		}
 	}
 	
+	/**
+	 * 
+	 * @param start
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public ArrayList<Integer> getNodeNeighbors(int start) throws IllegalArgumentException {
 		if(start >= size || start < 0){
 			throw new IllegalArgumentException("no such node");

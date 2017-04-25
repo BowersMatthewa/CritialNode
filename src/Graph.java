@@ -113,6 +113,19 @@ public class Graph{
 		removeNode(node);
 	}
 	
+	public void removeMax(){
+		int max = 0;
+		int maxSize = 0;
+		ArrayList<Integer>[] adjList = list.getNodes();
+		for(int i = 0; i < nodeCount; i++){
+			ArrayList<Integer> current = adjList[i];
+			max = (current.size() > maxSize) ? i : max;
+			maxSize = (current.size() > maxSize) ? current.size() : maxSize;
+		}
+		System.out.printf("Removing Node: %d With %d\n", (max+1), maxSize);
+		removeNode(max);
+	}
+	
 	/**
 	 * transitive closure
 	 */

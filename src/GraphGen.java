@@ -7,9 +7,9 @@ public class GraphGen {
 
 	public static void main(String[] args) {
 		Random rand = new Random();
-		int node = rand.nextInt(10)+5;
-		int edges = rand.nextInt(20)+5;
-		int remove = rand.nextInt(2)+1;
+		int node = rand.nextInt(30)+70;
+		int edges = rand.nextInt(300)+700;
+		int remove = rand.nextInt(10)+5;
 		ArrayList<Edge> edgeList = new ArrayList<Edge>();
 		
 		System.out.println(node + " " + edges + " " + remove);

@@ -33,7 +33,7 @@ public class CritialNode{
 			}catch(Exception e){e.printStackTrace();}
 			System.out.println(current.printForest());
 			for(int i = 0; i < numToRemove; i++){
-				graph.removeRandom();
+				graph.removeMax();
 			}
 			//graph.getAdjacencyList().printList();
 			current = new DFS(graph);
