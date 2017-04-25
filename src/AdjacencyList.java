@@ -22,7 +22,7 @@ public class AdjacencyList{
 	 *
 	 * instantiates an array of v ArrayLists of length v-1. At most any node will have v-1 adjacencies.
 	 *
-	 * @params n - The number of nodes in the graph
+	 * @param n - The number of nodes in the graph
 	 */
 	public AdjacencyList(int n){
 		nodes = new ArrayList[n];
@@ -38,9 +38,9 @@ public class AdjacencyList{
 	 * If the edge is directed an edge from start to finish will be added
 	 * If the edge is not direced an edge will be added in both directions
 	 *
-	 * @params int start - the beginning of the edge
-	 * @params int finish - the end of the the edge
-	 * @params boolean directed - is this edge directed
+	 * @param int start - the beginning of the edge
+	 * @param int finish - the end of the the edge
+	 * @param boolean directed - is this edge directed
 	 */
 	public void addEdge(int start, int finish, boolean dir){
 		nodes[start].add(finish);
@@ -77,7 +77,7 @@ public class AdjacencyList{
 	/**
 	 * removeNode - removes incoming and outgoing edges of a node
 	 *
-	 * @params int node - the number of the node to be removed
+	 * @param int node - the number of the node to be removed
 	 */
 	public void removeNode(int node) throws IllegalArgumentException{
 		if(node<0 || node >= size){
@@ -95,9 +95,9 @@ public class AdjacencyList{
 	 *
 	 * If the edge is not directed the edge will be removed in both directions
 	 *
-	 * @params int start - the beginning of the edge
-	 * @params int finsih - the end of the edge
-	 * @params boolean dir - is the edge directed
+	 * @param int start - the beginning of the edge
+	 * @param int finish - the end of the edge
+	 * @param boolean dir - is the edge directed
 	 */
 	public void removeEdge(int start, int finish, boolean dir)throws IllegalArgumentException{
 		if(!nodes[start].remove((Integer)finish)){

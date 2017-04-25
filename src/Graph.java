@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 // package com.github.bowersmatthew.criticalnode
 
@@ -9,8 +10,8 @@ import java.util.ArrayList;
 public class Graph{
     // variables
     AdjacencyList list;
-	//AdjacencyMatric matrix;
-	// ArrayList<Node> nodes;
+	Random rand = new Random();
+	ArrayList<Integer> removed;
 	public int nodeCount, edgeCount;
 	boolean dir;
 
@@ -24,9 +25,20 @@ public class Graph{
 			this.nodeCount = nodeCount;
 			this.edgeCount = edgeCount;
 			this.dir = dir;
+			removed = new ArrayList<Integer>();
 		}
 	}
 
+	public Graph copyGraph(Graph og){
+		Graph ng = new Graph(og.nodeCount, og.edgeCount, og.getDirected());
+		for(int i = 0; i < nodeCount; i++){
+			for(Integer neigh : list.getNodeNeighbors(i)){
+				ng.addEdge(i, neigh);
+			}
+		}
+		return ng;
+	}
+	
 	public void addEdge(int u, int v) throws IllegalArgumentException{
 		if(u > nodeCount || v > nodeCount || u<0 || v<0){
 			throw new IllegalArgumentException("attempting to add edge to one or more edges which do not exist");
@@ -83,6 +95,18 @@ public class Graph{
 		return dir;
 	}
 
+	/**
+	 * removeRandom - removes a random node from the graph
+	 */
+	public void removeRandom(){
+		int node;
+		do{
+			node = rand.nextInt(nodeCount);
+		}while(removed.contains((Integer)node));
+		removed.add((Integer)node);
+		removeNode(node);
+	}
+	
 	/**
 	 * transitive closure
 	 */

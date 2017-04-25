@@ -15,7 +15,8 @@ import java.io.*;
 public class CritialNode{
 	public static Scanner scan = new Scanner(System.in);
 	public static void main(String[] args){ 
-		Graph graph;
+		Graph graph, ograph;
+		DFS best;
 		
 		
 		String[] line = scan.nextLine().split(" ");
@@ -23,9 +24,13 @@ public class CritialNode{
 			graph = new Graph(Integer.parseInt(line[0]), Integer.parseInt(line[1]), false);
 			int numToRemove = Integer.parseInt(line[2]);
 			buildGraph(graph, args);
+			// copy the original graph for safe keeping
+			ograph = graph.copyGraph(graph);
 			graph.getAdjacencyList().printList();
-			graph.removeNode(1);
-			graph.getAdjacencyList().printList();
+			DFS current = new DFS(graph);
+			try{
+				System.out.print(current.countPairWise());
+			}catch(Exception e){e.printStackTrace();}
 		}catch(NumberFormatException nfe){
 			System.out.println("Expected 3 integers seperated by a space on first line");
 			System.exit(1);
