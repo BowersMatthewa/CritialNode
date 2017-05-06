@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 import java.io.*;
 
@@ -14,10 +15,12 @@ import java.io.*;
 
 public class CritialNode{
 	public static Scanner scan = new Scanner(System.in);
+	public static Random rand = new Random();
+	
 	public static void main(String[] args){ 
 		Graph graph, ograph;
 		DFS best;
-		
+		int bestCount=Integer.MAX_VALUE, currentCount=Integer.MAX_VALUE;
 		
 		String[] line = scan.nextLine().split(" ");
 		try{
@@ -27,20 +30,52 @@ public class CritialNode{
 			// copy the original graph for safe keeping
 			ograph = graph.copyGraph(graph);
 			//graph.getAdjacencyList().printList();
-			DFS current = new DFS(graph);
+			best = new DFS(graph);
 			try{
-				System.out.println(current.countPairWise());
+				bestCount = best.countPairWise();
+				System.out.printf("Starting Connectivity: %d\n", bestCount);
 			}catch(Exception e){e.printStackTrace();}
-			System.out.println(current.printForest());
-			for(int i = 0; i < numToRemove; i++){
-				graph.removeMax();
+			//System.out.println(current.printForest());
+			
+			// try searching for a subgraph which can be disconnected
+			BFS bfs = new BFS(graph);
+			int numToX = Integer.MAX_VALUE;
+			int maxAttempts = 10, attempts = 0;
+			while(attempts <= maxAttempts){
+				while((numToX > numToRemove) && attempts <= maxAttempts){
+					int i = 1;
+					while(numToX > numToRemove && i < 5){
+						numToX = bfs.getOutConnections(bfs.getXNeighbors(rand.nextInt(graph.nodeCount), i));
+						System.out.printf("Random start Nodes within: %d numToX: %d\n", i, numToX);
+						i++;
+					}
+					numToX = Integer.MAX_VALUE;
+					System.out.printf("attempt: %d/%d\n", attempts++, maxAttempts);
+				}
+				if(bfs.getToRemove().size() > numToRemove){
+					System.out.println("Algorithm failed");
+					System.exit(0);
+				}
+				System.out.printf("Removing: %d nodes\n", bfs.getToRemove().size());
+				for(Integer n: bfs.getToRemove()){
+					graph.removeNode((int)n);
+				}
+				
+				//for(i = 0; i < numToRemove; i++){
+				//	graph.removeMax();
+				//}
+				//graph.getAdjacencyList().printList();
+				DFS current = new DFS(graph);
+				try{
+					currentCount = current.countPairWise();
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				if(currentCount < bestCount){
+					best = current;
+				}
 			}
-			//graph.getAdjacencyList().printList();
-			current = new DFS(graph);
-			try{
-				System.out.println(current.countPairWise());
-			}catch(Exception e){e.printStackTrace();}
-			System.out.println(current.printForest());
+			// System.out.println(best.printForest());
 		}catch(NumberFormatException nfe){
 			System.out.println("Expected 3 integers seperated by a space on first line");
 			System.exit(1);
@@ -49,6 +84,7 @@ public class CritialNode{
 			System.exit(1);
 		}
 	}
+
 	
 	private static void buildGraph(Graph graph, String[] args){
 		int lineNum = 1;

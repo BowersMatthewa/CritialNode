@@ -127,7 +127,7 @@ public class DFS{
 	private void doDFS(){
 		for(Node n : nodes){
 			if(n.getColor() == Color.white){
-				System.out.println(n.getName());
+				//System.out.println(n.getName());
 				forestCount++;
 				ArrayList<Node> subGraph = new ArrayList<Node>();
 				forest.add(subGraph);
@@ -171,7 +171,7 @@ public class DFS{
 		else{
 			int count = 0;
 				for(ArrayList<Node> g : forest){
-					System.out.println(g.size());
+					//System.out.println(g.size());
 					count+= (g.size()*(g.size()-1))/2;
 				}
 			return count;
