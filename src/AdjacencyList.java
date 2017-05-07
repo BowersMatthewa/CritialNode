@@ -103,7 +103,7 @@ public class AdjacencyList{
 		while(adj.hasNext()){
 			// remove node from everyone else's adjacency list
 			int next = (int)adj.next();
-			System.out.println("Removing: " + (node + 1) +"from: " + (next + 1));
+			//System.out.println("Removing: " + (node + 1) +"from: " + (next + 1));
 			nodes[next].remove((Integer)node);
 		}
 		adj = null;

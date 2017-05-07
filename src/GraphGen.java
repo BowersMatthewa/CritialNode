@@ -7,9 +7,9 @@ public class GraphGen {
 
 	public static void main(String[] args) {
 		Random rand = new Random();
-		int node = rand.nextInt(30)+600;
-		int edges = rand.nextInt(300)+7000;
-		int remove = rand.nextInt(10)+100;
+		int node = 100;
+		int edges = 300;
+		int remove = 50;
 		ArrayList<Edge> edgeList = new ArrayList<Edge>();
 		
 		System.out.println(node + " " + edges + " " + remove);
@@ -21,13 +21,16 @@ public class GraphGen {
 			
 			start = rand.nextInt(node) +1;
 			finish = rand.nextInt(node)+1;
+			//finish = start + rand.nextInt(node*.2)-rand.nextInt(node*.2);
 			newEdge = new Edge(start, finish);
-			if(start != finish)
+			// System.out.println(start + " " + finish);
+			if(start != finish && finish <= node && finish > 0)
 				if(!edgeList.contains(newEdge)){
+					//System.out.println("adding Edge" + i);
 					edgeList.add(newEdge);
 				}
 				else{
-				//System.out.println("Edge Aleady Exists");
+				//System.out.println("Edge Already Exists");
 					i--;
 				}
 			else{
@@ -44,6 +47,7 @@ public class GraphGen {
 			//if(!edgeList.contains(newEdge))
 			//	edgeList.add(newEdge);
 		}
+		//System.out.println("Sorting Edges");
 		Collections.sort(edgeList);
 		for(Edge e : edgeList){
 			System.out.println(e);

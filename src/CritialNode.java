@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 import java.io.*;
@@ -16,16 +17,21 @@ import java.io.*;
 public class CritialNode{
 	public static Scanner scan = new Scanner(System.in);
 	public static Random rand = new Random();
+	public static int bestCount, currentCount, numToRemove;
+	public static DFS best;
+	public static ArrayList<Integer> bestRemove;
+	public static Graph graph, ograph, bestGraph;
 	
 	public static void main(String[] args){ 
-		Graph graph, ograph;
-		DFS best;
-		int bestCount=Integer.MAX_VALUE, currentCount=Integer.MAX_VALUE;
+		
+		bestCount=Integer.MAX_VALUE;
+		currentCount=Integer.MAX_VALUE;
+		bestRemove= new ArrayList<Integer>();
 		
 		String[] line = scan.nextLine().split(" ");
 		try{
 			graph = new Graph(Integer.parseInt(line[0]), Integer.parseInt(line[1]), false);
-			int numToRemove = Integer.parseInt(line[2]);
+			numToRemove = Integer.parseInt(line[2]);
 			buildGraph(graph, args);
 			// copy the original graph for safe keeping
 			ograph = graph.copyGraph(graph);
@@ -38,44 +44,50 @@ public class CritialNode{
 			//System.out.println(current.printForest());
 			
 			// try searching for a subgraph which can be disconnected
-			BFS bfs = new BFS(graph);
+			boolean found = false;
 			int numToX = Integer.MAX_VALUE;
-			int maxAttempts = 10, attempts = 0;
+			int maxAttempts = 1000, attempts = 0;
 			while(attempts <= maxAttempts){
 				while((numToX > numToRemove) && attempts <= maxAttempts){
+					//System.out.printf("attempt: %d/%d\n", attempts, maxAttempts);
 					int i = 1;
-					while(numToX > numToRemove && i < 5){
+					int size = 0;
+					do{
+						BFS bfs = new BFS(graph);
 						numToX = bfs.getOutConnections(bfs.getXNeighbors(rand.nextInt(graph.nodeCount), i));
-						System.out.printf("Random start Nodes within: %d numToX: %d\n", i, numToX);
+						//System.out.printf("Random start Nodes within: %d numToX: %d\n", i, numToX);
+						size = bfs.getInNodeSize();
+						if(numToX <= numToRemove){
+							found = true;
+							tryThese(bfs);
+						}
 						i++;
-					}
-					numToX = Integer.MAX_VALUE;
-					System.out.printf("attempt: %d/%d\n", attempts++, maxAttempts);
+						numToX = Integer.MAX_VALUE;
+						//System.out.printf("i: %d InSize: %d GraphSize: %d\n",i, size, graph.nodeCount);
+					}while(size < graph.nodeCount && i < 30);
+					attempts++;
+					
 				}
-				if(bfs.getToRemove().size() > numToRemove){
+				if(!found){
 					System.out.println("Algorithm failed");
-					System.exit(0);
-				}
-				System.out.printf("Removing: %d nodes\n", bfs.getToRemove().size());
-				for(Integer n: bfs.getToRemove()){
-					graph.removeNode((int)n);
-				}
-				
-				//for(i = 0; i < numToRemove; i++){
-				//	graph.removeMax();
-				//}
-				//graph.getAdjacencyList().printList();
-				DFS current = new DFS(graph);
-				try{
-					currentCount = current.countPairWise();
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-				if(currentCount < bestCount){
-					best = current;
+					graph = ograph.copyGraph(ograph);
+					//System.exit(0);
 				}
 			}
-			// System.out.println(best.printForest());
+			attempts = 0;
+			System.out.println("Trying Random");
+			while(attempts <= maxAttempts){
+				//System.out.printf("Random Remove attempt: %d/%d\n", attempts, maxAttempts);
+				randomRemove();
+				attempts++;
+			}
+			//System.out.println(best.printForest());
+			
+			System.out.println("Ending Connectivity: " + bestCount);
+			System.out.println("Removed Nodes: " + bestRemove.size());
+			for(Integer n : bestRemove){
+				System.out.println(n.toString());
+			}
 		}catch(NumberFormatException nfe){
 			System.out.println("Expected 3 integers seperated by a space on first line");
 			System.exit(1);
@@ -83,8 +95,61 @@ public class CritialNode{
 			System.out.println("Graph constructor expects the number of nodes and edges");
 			System.exit(1);
 		}
+		try{
+			PrintWriter pw = new PrintWriter("cnp.out", "UTF-8");
+			pw.println(bestCount);
+			for(Integer n : bestRemove){
+				pw.print(n + " ");
+			}
+			pw.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
 	}
 
+	private static void randomRemove(){
+		for (int i = 0; i < numToRemove; i++){
+			graph.removeRandom();
+		}
+		DFS current = new DFS(graph);
+		try{
+			currentCount = current.countPairWise();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		if(currentCount <= bestCount){
+			System.out.println("Found Better!");
+			bestGraph = graph;
+			bestCount = currentCount;
+			best = current;
+			bestRemove = graph.removed;
+		}
+		graph = ograph.copyGraph(ograph);
+	}
+	private static void tryThese(BFS bfs){
+		//System.out.printf("Removing: %d nodes\n", bfs.getToRemove().size());
+		for(Integer n: bfs.getToRemove()){
+			graph.removeNode((int)n);
+		}
+		// random remove up to limit
+		while(graph.removed.size() < numToRemove){
+			graph.removeRandom();
+		}
+		DFS current = new DFS(graph);
+		try{
+			currentCount = current.countPairWise();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		if(currentCount <= bestCount){
+			System.out.println("Found better");
+			bestGraph = graph;
+			best = current;
+			bestCount = currentCount;
+			bestRemove = graph.removed;
+		}
+		graph = ograph.copyGraph(ograph);
+	}
 	
 	private static void buildGraph(Graph graph, String[] args){
 		int lineNum = 1;

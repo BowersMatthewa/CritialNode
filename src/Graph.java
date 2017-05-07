@@ -59,6 +59,7 @@ public class Graph{
 		}
 		try{
 			list.removeNode(node);
+			removed.add(node);
 		}catch(IllegalArgumentException iae){
 			System.out.printf("Error removing node: %d: \n" + iae.getMessage(), node);
 		}catch(ConcurrentModificationException cme){
@@ -108,8 +109,8 @@ public class Graph{
 		do{
 			node = rand.nextInt(nodeCount);
 		}while(removed.contains((Integer)node));
-		System.out.printf("Removing %d\n", node + 1);
-		removed.add((Integer)node);
+		//System.out.printf("Removing %d\n", node + 1);
+		//removed.add((Integer)node);
 		removeNode(node);
 	}
 	
@@ -122,7 +123,7 @@ public class Graph{
 			max = (current.size() > maxSize) ? i : max;
 			maxSize = (current.size() > maxSize) ? current.size() : maxSize;
 		}
-		System.out.printf("Removing Node: %d With %d\n", (max+1), maxSize);
+		//System.out.printf("Removing Node: %d With %d\n", (max+1), maxSize);
 		removeNode(max);
 	}
 	

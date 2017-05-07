@@ -14,7 +14,7 @@ public class BFS {
 	private LinkedList<Node> q, stepQ;
 	private Node[] nodes, stepNodes;
 	private int currentDistance;
-	private ArrayList<Node> toRemove;
+	private ArrayList<Node> toRemove, inNodes;
 	
 	private class Node{
 		int name;
@@ -126,7 +126,7 @@ public class BFS {
 	public ArrayList<Node> getXNeighbors(int node, int n){
 		Node root = stepNodes[node];
 		stepQ = new LinkedList<Node>();
-		ArrayList<Node> inNodes = new ArrayList<Node>();
+		inNodes = new ArrayList<Node>();
 		inNodes.add(root);
 		root.setPred(root);
 		root.setDist(0);
@@ -141,6 +141,7 @@ public class BFS {
 					next.setDist(current.dist+1);
 					currentDistance = next.getDist();
 					inNodes.add(next);
+					stepQ.add(next);
 				}
 			}
 		}
@@ -165,6 +166,10 @@ public class BFS {
 			}
 		}
 		return count;
+	}
+	
+	public int getInNodeSize(){
+		return inNodes.size() + toRemove.size();
 	}
 	
 	// Only after getOutConnections
